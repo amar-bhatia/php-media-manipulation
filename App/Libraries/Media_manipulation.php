@@ -567,7 +567,7 @@
 
 		/* If you do not have font with ".php" and ".z" extension use function ttfToPHPZ() to convert ttf file to ".php" and ".z" etension, remember you will need both the files for the custom font to work */
 
-		public function ttfToPHPZ($font_path, $enc = '', $custom_font_folder_path = ""){
+		public function ttfToPHPZ($font_path, $custom_font_folder_path, $enc = '',){
 
 			/* ======================================================
 				Following are the enc types that are supported:
@@ -600,9 +600,9 @@
 
 
 	        $font = \FontLib\Font::load($font_path);
-    			$font->parse();  // for getFontWeight() to work this call must be done first!
-    			$font_script_name = $font->getFontPostscriptName();
-    			$font->close();
+			$font->parse();  // for getFontWeight() to work this call must be done first!
+			$font_script_name = $font->getFontPostscriptName();
+			$font->close();
 
 	        // Convert TTF to PHP font
 	        try {
@@ -616,13 +616,9 @@
 	        	// End output buffering and discard the output
         		ob_end_clean();
 
-
-	        	if(!empty($custom_font_folder_path)){
-	        		$font_name = pathinfo($font_path, PATHINFO_FILENAME);
-	        		rename(FCPATH.'/'.$font_name.'.php', $custom_font_folder_path.$font_name.'.php');
-	        		rename(FCPATH.'/'.$font_name.'.z', $custom_font_folder_path.$font_name.'.z');
-	        	}
-
+        		$font_name = pathinfo($font_path, PATHINFO_FILENAME);
+        		rename(FCPATH.'/'.$font_name.'.php', $custom_font_folder_path.$font_name.'.php');
+        		rename(FCPATH.'/'.$font_name.'.z', $custom_font_folder_path.$font_name.'.z');
 
 	        	return [
 	        		'status' => true,
