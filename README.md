@@ -7,6 +7,8 @@ A powerful PHP library for adding image and text watermarks to images and videos
 
 - Add multiple image watermarks with custom positioning and dimensions.
 - Add multiple text watermarks with flexible font, size, and color options.
+- Add watermarks to PDFs.
+- Convert TTF fonts to PHP array format.
 - Compatible with both images and videos.
 - Simple and extensible.
 
@@ -183,6 +185,8 @@ $video_manipulation_response = $media->manipulateVideo(
 
 ### Adding Watermarks to a PDF
 
+- This PDF library does not work with TTF font types, it needs font with ".php and .z" extensions. ttf to PHP conversion function and steps have been provided below.
+
 ```php
 require_once 'Media_manipulation.php';
 
@@ -219,7 +223,7 @@ $watermark_images = [
             'font_color' => '#000000',
             'x_axis' => 297 - 3,
             'y_axis' => 1080,
-            'font' => 'your_font_path/arial.ttf'
+            'font' => 'your_font_path/arial.php'
         ],
         [
             'text' => 'example@email.com',
@@ -227,7 +231,7 @@ $watermark_images = [
             'font_color' => '#000000',
             'x_axis' => 297 - 3,
             'y_axis' => 1110,
-            'font' => 'your_font_path/arial.ttf'
+            'font' => 'your_font_path/arial.php'
         ]
     ]
 ];
@@ -241,3 +245,47 @@ $pdf_manipulation_response = $media->manipulatePDF(
     $custom_font_folder_path
 );
 ```
+
+### Font Conversion: `ttfToPHPZ`
+
+The `ttfToPHPZ` function converts a TTF font file into a PHP array definition. This is useful for embedding fonts in projects such as PDF generation or custom rendering systems. The function also includes options for customization.
+
+```php
+
+require_once 'Media_manipulation.php';
+
+use App\Libraries\Media_manipulation;
+
+$media = new Media_manipulation();
+
+$ttf_file = 'assets/fonts/Roboto-Regular.ttf';
+$output_font_folder = 'assets/font_folder';
+$enc_type = 'cp1252' // Not Mandatory
+
+$converted_font_data = ttfToPHPZ($ttf_file,$output_font_folder, $enc_type);
+
+```
+#### Enc Types
+
+Following is the list of Enc types:
+    
+    1. cp1250 (Central Europe)
+    2. cp1251 (Cyrillic)
+    3. cp1252 (Western Europe) - Default
+    4. cp1253 (Greek)
+    5. cp1254 (Turkish)
+    6. cp1255 (Hebrew)
+    7. cp1257 (Baltic)
+    8. cp1258 (Vietnamese)
+    9. cp874 (Thai)
+    10. ISO-8859-1 (Western Europe)
+    11. ISO-8859-2 (Central Europe)
+    12. ISO-8859-4 (Baltic)
+    13. ISO-8859-5 (Cyrillic)
+    14. ISO-8859-7 (Greek)
+    15. ISO-8859-9 (Turkish)
+    16. ISO-8859-11 (Thai)
+    17. ISO-8859-15 (Western Europe)
+    18. ISO-8859-16 (Central Europe)
+    19. KOI8-R (Russian)
+    20. KOI8-U (Ukrainian)
